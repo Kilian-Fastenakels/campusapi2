@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Campus = require('./models/campus');
+const Docent = require('./models/docent');
 
 /********************************/
 /*           Routes             */
@@ -21,6 +22,12 @@ router.get('/', (req, res) => {
 
     +'<h2>/campus</h2>'
     +'Returns all campuses in the database using .find()'
+
+    +'<hr/>'
+
+    +'<h2>/docent</h2>'
+    +'Returns all campuses in the database using .find() sorted by first name'
+    +'This includes all the campuses they work at'
 
     +'<hr/>'
 
@@ -56,6 +63,19 @@ router.get('/', (req, res) => {
     
     +'<hr/>'
   );
+});
+
+/**
+ * Return all docenten
+ */
+ router.get('/docent', async (req, res) => {
+  console.log('/docent route called');
+  try {
+    res.json(await Docent.find().populate('campussen').sort('voornaam'));
+  } catch(e) {
+    console.log(e);
+    res.sendStatus(500);
+  }
 });
 
 /**
